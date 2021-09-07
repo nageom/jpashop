@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +20,8 @@ public class MemberRepositoryTest {
     //tdd + tab //setting / Livetemplates
     @Test
     @Transactional //트랜잭션 어노테이션이 꼭 필요
+    //@Rollback(false) 을 넣으면 롤백을 안하고 db에 값을 넣고 확인 할수있음
+    @Rollback(false)
     public void testMember() throws Exception {
 
         Member member = new Member();
@@ -31,9 +34,10 @@ public class MemberRepositoryTest {
         //then
         Assertions.assertThat(findMember.getId()).isEqualTo(member.getId());
         Assertions.assertThat(findMember.getUsername()).isEqualTo(member.getUsername());
+        Assertions.assertThat(findMember).isEqualTo(member);
+        System.out.println("findMmeber == member "+ (findMember == member));
 
-
-
+//트랜잭션이 테스트케이스에 있으면 테스트가 끝난후 바로 롤백해버린다. 말그대로 테스트니까 ㅎ
 
 
     }
